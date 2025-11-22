@@ -1,6 +1,6 @@
 <script setup>
-    import axios from 'axios'
     import { ref } from 'vue'
+    import axios from 'axios'
     import { useUserStore } from '@/scipts/userStore'
     import { useRouter } from 'vue-router'
 
@@ -8,15 +8,13 @@
     const userStore = useUserStore()
     const router = useRouter()
 
-    const username = ref('')
     const email = ref('')
     const password = ref('')
 
-    async function signup() {
+    async function signin() {
         try {
-            const res = await axios.post(`${backend_url}/user/signup`,
+            const res = await axios.post(`${backend_url}/user/signin`,
                 {
-                    username: username.value,
                     email: email.value,
                     password: password.value
                 },
@@ -30,30 +28,23 @@
                 userStore.changeName(res.data.data.user.username)
                 router.push('/')
             }
-
         } catch (error) {
             console.log('Unexpected error occured.')
         }
     }
 
-    function signInView() {
-        router.push('/signin')
+    function signUpView() {
+        router.push('/signup')
     }
+
 </script>
 
 <template>
     <div class="container">
-        <h1>Please sign up to continue</h1>
+        <h1>Please sign in to continue</h1>
 
-        <form @submit.prevent="signup">
+        <form @submit.prevent="signin">
             <div class="form-wrapper">
-                <input
-                    v-model="username"
-                    type="text"
-                    placeholder="Enter your username here"
-                    required
-                    minlength="6"
-                />
 
                 <input
                     v-model="email"
@@ -70,10 +61,10 @@
                     minlength="8"
                 />
 
-                <input type="submit" value="Sign Up" />
+                <input type="submit" value="Sign In" />
             </div>
         </form>
 
-        <p @click="signInView">Already has an account?</p>
+        <p @click="signUpView">Don't have an account?</p>
     </div>
 </template>

@@ -5,8 +5,17 @@ const createUser = async (userData) => {
     try {
         return await User.create(userData)
     } catch (error) {
-        throw new Error('MongoDB error: ' + error.message)
+        throw new Error('MongoDB error')
     }
 }
 
-module.exports = { createUser }
+// Repository pour récuperer un utilisateur depuis la base de donnée
+const findUserByMail = async (email) => {
+    try {
+        return await User.findOne({ email: email })
+    } catch (error) {
+        throw new Error('MongoDB error')
+    }
+}
+
+module.exports = { createUser, findUserByMail }
